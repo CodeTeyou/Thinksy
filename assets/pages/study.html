@@ -27,13 +27,19 @@
 
     <div class="studypage">
         <div class="timerbox">
-            <div class="spinners">
-                <button id="spinnerup">⮝</button>
-                <button id="spinnerdown">⮟</button>
+            <div class="timerholder">
+                <div id="spinners">
+                    <button id="spinnerup">⮝</button>
+                    <button id="spinnerdown">⮟</button>
+                </div>
+                <input type="number" id="timerinput" max="60" min="0" step="5" readonly>
+                <span id="timer">:00</span>                
             </div>
-            <input type="number" id="timerinput" max="60" min="0" step="5" readonly>
-            <span id="timer">:00</span>
-            <!-- Add Start System -->
+            <div class="timercontrols">
+                <button id="start" class="timertoggle">Start</button>
+                <button id="stop" class="timertoggle">Reset</button>
+            </div>
+
         </div>
 
         <div class="notes">
