@@ -81,6 +81,8 @@ function startTimer() {
             startButton.style.display = "none"
             stopButton.innerText = "Exit"
             stopButton.style.display = "inline"
+            timer.style.color = "var(--urgent)"
+            timerInput.style.color = "var(--urgent)"
             buzzerSound.play()
             startButton.innerText
             clearInterval(timerCount);
@@ -122,14 +124,23 @@ startButton.addEventListener("click", () => {
 stopButton.addEventListener("click", () => {
     timerOn = false;
     time = null;
+    buzzerSound.pause()
+    buzzerSound.currentTime = 0;
 
     startButton.innerText = "Start";
     startButton.style.display = "none";
+
     stopButton.style.display = "none";
+    stopButton.innerText = "Reset"
+
     spinnerContainer.style.display = "flex";
+
+    timer.style.color = "var(--studyfontclr)"
+    timer.innerText = ":00";    
+
+    timerInput.style.color = "var(--studyfontclr)"
     timerInput.value = "00";
     timerInput.style.display = "inline";
-    timer.innerText = ":00";
 
     clearInterval(timerCount);
     timerCount = null;
