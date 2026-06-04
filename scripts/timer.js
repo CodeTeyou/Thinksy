@@ -7,8 +7,44 @@ let startButton = document.getElementById('start');
 let stopButton = document.getElementById('stop');
 const buzzerSound = new Audio('../../assets/audios/buzzer.mp3');
 
-timerInput.value = "00";
-startButton.style.display = "none"
+let time;
+let timerCount;
+let timerOn = false;
+
+window.addEventListener("load", () => {
+    let previousTime = localStorage.getItem("timeNow")
+
+    timerInput.value = "00";
+    startButton.style.display = "none";
+
+    if (previousTime) {
+        timerOn = true;
+        time = previousTime;
+
+        let minute = Math.floor(time / 60);
+        let second = (time % 60);
+
+        if (minute < 10) {
+            minute = String("0" + minute);
+        }
+
+        if (second < 10) {
+            second = String("0" + second);
+        }
+
+        timer.innerText = String(minute + " : " + second);
+
+        spinnerContainer.style.display = "none";
+
+        startButton.style.display = "inline";
+        startButton.innerText = "Pause";
+
+        timerInput.style.display = "none";
+
+        startTimer();        
+    }
+})
+
 
 spinnerUp.addEventListener("click", () => {
     let currentValue = Number(timerInput.value);
@@ -56,9 +92,6 @@ spinnerDown.addEventListener("click", () => {
     timerInput.value = newValue;
 })
 
-let time;
-let timerCount;
-
 function startTimer() {
     clearInterval(timerCount);
     timerCount = setInterval(() => {
@@ -79,22 +112,28 @@ function startTimer() {
         if ((time - 1) < 0) {
             startButton.innerText = "Start";
             startButton.style.display = "none";
+            
             stopButton.innerText = "Exit";
             stopButton.style.display = "inline";
+
             timer.style.color = "var(--urgent)";
+
             timerInput.style.color = "var(--urgent)";
+
             buzzerSound.play();
+
             clearInterval(timerCount);
+            localStorage.removeItem("timeNow")
+
             return;
         }
 
         time--;
+        localStorage.setItem("timeNow", time);
+        timerOn = true;
     }, 1000)    
 }
 
-
-
-let timerOn = false;
 
 startButton.addEventListener("click", () => {
     if (timerOn) {
@@ -106,8 +145,10 @@ startButton.addEventListener("click", () => {
     } else {
         timerOn = true;
         spinnerContainer.style.display = "none";
+
         stopButton.style.display = "none"
         startButton.innerText = "Pause";
+
         timerInput.style.display = "none";
 
         if (!time) {
@@ -116,7 +157,6 @@ startButton.addEventListener("click", () => {
         }
 
         startTimer();
-        
     }
 })
 
@@ -142,5 +182,7 @@ stopButton.addEventListener("click", () => {
     timerInput.style.display = "inline";
 
     clearInterval(timerCount);
+    localStorage.removeItem("timeNow");
+
     timerCount = null;
 })

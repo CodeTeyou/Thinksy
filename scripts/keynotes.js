@@ -4,6 +4,17 @@ let noteNameInput = document.getElementById("notename");
 let save = document.getElementById("save");
 let keyNote = document.getElementById("keynotes");
 
+window.addEventListener("load", () => {
+    let savedContent = localStorage.getItem("lastNote");
+    
+
+    keyNote.value = savedContent;
+})
+
+window.addEventListener("beforeunload", () => {
+    localStorage.setItem("lastNote", keyNote.value);
+})
+
 const datarequest = indexedDB.open("KeyNotes");
 let database;
 

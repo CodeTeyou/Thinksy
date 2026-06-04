@@ -1,3 +1,5 @@
 {
     "git.decorations.enabled": false,
+    "liveServer.settings.host": "192.168.5.53",
+    "liveServer.settings.port": 8888
 }

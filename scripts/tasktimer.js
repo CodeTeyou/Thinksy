@@ -9,8 +9,51 @@ let goal = document.getElementById('goal');
 let goalInput = document.getElementById('goalinput');
 const buzzerSound = new Audio('../../assets/audios/buzzer.mp3');
 
-timerInput.value = "00";
-startButton.style.display = "none"
+let time;
+let timerCount;
+let timerOn = false;
+
+window.addEventListener("load", () => {
+    let previousTime = localStorage.getItem("taskTime");
+    let previousGoal = localStorage.getItem("goal");
+
+    timerInput.value = "00";
+    startButton.style.display = "none";
+
+    if (previousTime) {
+        timerOn = true;
+        time = previousTime;
+
+        let minute = Math.floor(time / 60);
+        let second = (time % 60);
+
+        if (minute < 10) {
+            minute = String("0" + minute);
+        }
+
+        if (second < 10) {
+            second = String("0" + second);
+        }
+
+        timer.innerText = String(minute + " : " + second);
+
+        spinnerContainer.style.display = "none";
+
+        startButton.style.display = "inline";
+        startButton.innerText = "Pause";
+
+        timerInput.style.display = "none";
+
+        startTimer();        
+    }
+
+    if (previousGoal || previousGoal == "") {
+        goalInput.style.display = "none";
+        goal.innerText = previousGoal;
+    }
+})
+
+
 
 spinnerUp.addEventListener("click", () => {
     let currentValue = Number(timerInput.value);
@@ -58,9 +101,6 @@ spinnerDown.addEventListener("click", () => {
     timerInput.value = newValue;
 })
 
-let time;
-let timerCount;
-
 function startTimer() {
     clearInterval(timerCount);
     timerCount = setInterval(() => {
@@ -88,16 +128,16 @@ function startTimer() {
             goal.style.color = "var(--urgent)";
             buzzerSound.play();
             clearInterval(timerCount);
+            localStorage.removeItem("taskTime");
+            localStorage.removeItem("goal");
             return;
         }
 
         time--;
+        localStorage.setItem("taskTime", time);
+        timerOn = true;
     }, 1000)    
 }
-
-
-
-let timerOn = false;
 
 startButton.addEventListener("click", () => {
     if (timerOn) {
@@ -119,7 +159,8 @@ startButton.addEventListener("click", () => {
 
             if (!goalInput.value == "") {
                 goalInput.style.display = "none";
-                goal.innerText = (goalInput.value);                
+                goal.innerText = (goalInput.value);
+                localStorage.setItem("goal", goalInput.value);
             } else {
                 goalInput.style.display = "none"
                 goal.style.display = "none"
@@ -160,5 +201,7 @@ stopButton.addEventListener("click", () => {
     goalInput.style.display = "inline";
 
     clearInterval(timerCount);
+    localStorage.removeItem("taskTime");
+    localStorage.removeItem("goal");
     timerCount = null;
 })
