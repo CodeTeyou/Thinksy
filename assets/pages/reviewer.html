@@ -1,39 +1,42 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../assets/styles/navbar.css">
-    <link rel="shortcut icon" href="../../assets/images/logo.ico" type="image/x-icon">
-    <link rel="stylesheet" href="../../assets/styles/reviewer.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=delete" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../assets/styles/navbar.css" />
+    <link
+      rel="shortcut icon"
+      href="../../assets/images/logo.ico"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="../../assets/styles/reviewer.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=delete"
+    />
     <title>Thinksy</title>
-</head>
-<body>
-    
+  </head>
+  <body>
     <nav class="navbar">
+      <div class="navtitle">
+        <img src="../../assets/images/logo.ico" alt="GradCap" />
+        <a href="../../index.html">Thinksy</a>
+      </div>
 
-        <div class="navtitle">
-            <img src="../../assets/images/logo.ico" alt="GradCap">
-            <a href="../../index.html">Thinksy</a>
-        </div>
-
-        <div class="navselect">
-            <a href="../../assets/pages/study.html">Study</a>
-            <a href="../../assets/pages/task.html">Task</a>
-            <a href="../../assets/pages/reviewer.html">Reviewer</a>
-        </div>
-
+      <div class="navselect">
+        <a href="../../assets/pages/study.html">Study</a>
+        <a href="../../assets/pages/task.html">Task</a>
+        <a href="../../assets/pages/reviewer.html">Reviewer</a>
+      </div>
     </nav>
     <main class="reviewerPage">
-        <div class="noteRender">
-            <div id="noteSelect"></div>
-            <textarea id="noteBox" readonly></textarea>
-        </div>
-        <div textEditor></div>
+      <div class="noteRender">
+        <div id="noteSelect"></div>
+        <textarea id="noteBox" readonly></textarea>
+      </div>
+      <div textEditor></div>
     </main>
-</body>
+  </body>
 
-<script src="../../scripts/reviewer.js"></script>
-
+  <script src="../../scripts/reviewer.js"></script>
 </html>

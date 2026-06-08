@@ -1,66 +1,72 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../assets/styles/navbar.css">
-    <link rel="shortcut icon" href="../../assets/images/logo.ico" type="image/x-icon">
-    <link rel="stylesheet" href="../../assets/styles/study.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../assets/styles/navbar.css" />
+    <link
+      rel="shortcut icon"
+      href="../../assets/images/logo.ico"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="../../assets/styles/study.css" />
     <title>Thinksy</title>
-</head>
-<body>
-    
+  </head>
+  <body>
     <nav class="navbar">
+      <div class="navtitle">
+        <img src="../../assets/images/logo.ico" alt="GradCap" />
+        <a href="../../index.html">Thinksy</a>
+      </div>
 
-        <div class="navtitle">
-            <img src="../../assets/images/logo.ico" alt="GradCap">
-            <a href="../../index.html">Thinksy</a>
-        </div>
-
-        <div class="navselect">
-            <a href="../../assets/pages/study.html">Study</a>
-            <a href="../../assets/pages/task.html">Task</a>
-            <a href="../../assets/pages/reviewer.html">Reviewer</a>
-        </div>
-
+      <div class="navselect">
+        <a href="../../assets/pages/study.html">Study</a>
+        <a href="../../assets/pages/task.html">Task</a>
+        <a href="../../assets/pages/reviewer.html">Reviewer</a>
+      </div>
     </nav>
 
     <div class="studypage">
-        <div class="timerbox">
-            <div class="timerholder">
-                <div id="spinners">
-                    <button id="spinnerup"><img src="../../assets/images/arrow.png" alt="up"></button>
-                    <button id="spinnerdown"><img src="../../assets/images/arrow.png" alt="down"></button>
-                </div>
-                <input type="number" id="timerinput" max="60" min="0" step="5" readonly>
-                <span id="timer">:00</span>
-            </div>
-            <div class="timercontrols">
-                <button id="start" class="timertoggle">Start</button>
-                <button id="stop" class="timertoggle">Reset</button>
-            </div>
-
+      <div class="timerbox">
+        <div class="timerholder">
+          <div id="spinners">
+            <button id="spinnerup">
+              <img src="../../assets/images/arrow.png" alt="up" />
+            </button>
+            <button id="spinnerdown">
+              <img src="../../assets/images/arrow.png" alt="down" />
+            </button>
+          </div>
+          <input
+            type="number"
+            id="timerinput"
+            max="60"
+            min="0"
+            step="5"
+            readonly
+          />
+          <span id="timer">:00</span>
         </div>
-
-        <div class="notes">
-            <div class="savebox">
-                <h1>Key Notes</h1>
-                <div class="savename">
-                    <select id="savednotes"></select>    
-                    <input type="text" id="notename" maxlength="20">
-                </div>
-                <button id="save">Save</button>
-            </div>
-            <textarea id="keynotes" placeholder="Type Key Notes Here..."></textarea>
+        <div class="timercontrols">
+          <button id="start" class="timertoggle">Start</button>
+          <button id="stop" class="timertoggle">Reset</button>
         </div>
-        
+      </div>
+
+      <div class="notes">
+        <div class="savebox">
+          <h1>Key Notes</h1>
+          <div class="savename">
+            <select id="savednotes"></select>
+            <input type="text" id="notename" maxlength="16" />
+          </div>
+          <button id="save">Save</button>
+        </div>
+        <textarea id="keynotes" placeholder="Type Key Notes Here..."></textarea>
+      </div>
     </div>
+  </body>
 
-
-
-</body>
-
-<script src="../../scripts/timer.js"></script>
-<script src="../../scripts/keynotes.js"></script>
-
+  <script src="../../scripts/timer.js"></script>
+  <script src="../../scripts/keynotes.js"></script>
 </html>

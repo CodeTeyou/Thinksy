@@ -1,52 +1,51 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 
 .homepage {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-    width: 100vw;
-    height: 92vh;
+  width: 100vw;
+  height: 92vh;
 }
 
 .homeprompt {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    width: 80vw;
-    margin-bottom: 32px;
+  width: 80vw;
+  margin-bottom: 32px;
 
-    color: var(--fontclr);
-    text-decoration: none;
-    font-size: 40px;
-    font-weight: 600;
+  color: var(--fontclr);
+  text-decoration: none;
+  font-size: 40px;
+  font-weight: 600;
 }
 
 .select {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-content: center;
+  align-items: center;
 
-    width: 40vw;
+  width: 40vw;
 }
 
 .select a {
-    color: var(--fontclr);
-    text-decoration: none;
-    font-weight: 600;
+  color: var(--fontclr);
+  text-decoration: none;
+  font-weight: 600;
 
-    border: 2px solid var(--fontclr);
-    border-radius: 32px;
-    padding: 8px 16px;
+  border: 2px solid var(--fontclr);
+  border-radius: 32px;
+  padding: 8px 16px;
 
-    transition: var(--trans);
+  transition: var(--trans);
 }
 
 .select a:hover {
-    background-color: var(--theme);
+  background-color: var(--theme);
 }
