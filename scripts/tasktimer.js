@@ -51,12 +51,12 @@ window.addEventListener("load", () => {
     startTimer();
   }
 
-  if (previousGoal) {
+  if (!previousGoal || previousGoal == "") {
+    goalInput.style.display = "block";
+    goal.innerText = "Goal: ";
+  } else if (previousGoal) {
     goalInput.style.display = "none";
     goal.innerText = previousGoal;
-  } else if (!previousGoal || previousGoal == "") {
-    goalInput.style.display = "none";
-    goal.innerText = ""
   }
 });
 
