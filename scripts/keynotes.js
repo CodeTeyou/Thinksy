@@ -1,3 +1,5 @@
+// Rewrite Input Logic
+
 let noteOptions = document.getElementById("savednotes");
 let noteNameInput = document.getElementById("notename");
 let save = document.getElementById("save");
