@@ -203,16 +203,16 @@ stopButton.addEventListener("click", () => {
 
   spinnerContainer.style.display = "flex";
 
-  timer.style.color = "var(--studyfontclr)";
+  timer.style.color = "var(--fontclr)";
   timer.innerText = ":00";
 
-  timerInput.style.color = "var(--studyfontclr)";
+  timerInput.style.color = "var(--fontclr)";
   timerInput.value = "00";
   timerInput.style.display = "inline";
 
   goal.style.display = "inline";
   goal.innerText = "Goal: ";
-  goal.style.color = "var(--studyfontclr)";
+  goal.style.color = "var(--fontclr)";
 
   goalInput.style.display = "inline";
 

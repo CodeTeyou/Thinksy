@@ -188,10 +188,10 @@ stopButton.addEventListener("click", () => {
 
   spinnerContainer.style.display = "flex";
 
-  timer.style.color = "var(--studyfontclr)";
+  timer.style.color = "var(--fontclr)";
   timer.innerText = ":00";
 
-  timerInput.style.color = "var(--studyfontclr)";
+  timerInput.style.color = "var(--fontclr)";
   timerInput.value = "00";
   timerInput.style.display = "inline";
 

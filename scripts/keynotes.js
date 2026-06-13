@@ -63,6 +63,11 @@ datarequest.onerror = (event) => {
 // Saving
 
 save.addEventListener("click", () => {
+  if (!database) {
+    console.error("Database is Null:", database);
+    return;
+  }
+
   const transaction = database.transaction(["notesList"], "readwrite");
   const store = transaction.objectStore("notesList");
 
@@ -73,7 +78,7 @@ save.addEventListener("click", () => {
 
   getSaved.onsuccess = () => {
     const previousId = getSaved.result.find(
-      (saved) => saved.name === nameInsert,
+      (saved) => saved.id === Number(currentItem),
     );
 
     if (nameInsert.trim() == "") {
@@ -110,15 +115,15 @@ noteNameInput.addEventListener("input", () => {
       (child) => child.value === noteNameInput.value.trim(),
     );
     if (!match) {
-      keyNote.value = "+ New";
+      currentItem = null;
       return;
     }
     const note = request.result.find(
       (item) => item.id === Number(match.dataset.id),
     );
 
-    console.log(match, note);
     if (!note) return;
     keyNote.value = note.notes;
+    currentItem = match.dataset.id;
   };
 });
