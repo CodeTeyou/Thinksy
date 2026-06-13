@@ -1,19 +1,18 @@
-let noteOptions = document.getElementById("savednotes");
-let noteNameInput = document.getElementById("notename");
-let save = document.getElementById("save");
-let keyNote = document.getElementById("keynotes");
+const noteOptions = document.getElementById("savednotes");
+const noteNameInput = document.getElementById("notename");
+const saveButton = document.getElementById("save");
+const keyNote = document.getElementById("keynotes");
 
+let database = null;
 let currentItem = null;
 
-// Crash Result
+// Crash Recovery
 
 window.addEventListener("load", () => {
-  let savedContent = localStorage.getItem("lastNote");
-  let savedName = localStorage.getItem("lastName");
+  const savedContent = localStorage.getItem("lastNote");
+  const savedName = localStorage.getItem("lastName");
 
-  if (!savedContent || !savedName) {
-    return;
-  }
+  if (savedContent === null || savedName === null) return;
 
   keyNote.value = savedContent;
   noteNameInput.value = savedName;
@@ -26,104 +25,145 @@ window.addEventListener("beforeunload", () => {
 
 // IndexedDB
 
-const datarequest = indexedDB.open("KeyNotes");
-let database;
+const request = indexedDB.open("KeyNotes", 1);
 
-datarequest.onupgradeneeded = (event) => {
-  database = event.target.result;
+request.onupgradeneeded = (event) => {
+  const db = event.target.result;
 
-  database.createObjectStore("notesList", {
-    keyPath: "id",
-    autoIncrement: true,
-  });
+  if (!db.objectStoreNames.contains("notesList")) {
+    db.createObjectStore("notesList", {
+      keyPath: "id",
+      autoIncrement: true,
+    });
+  }
 };
 
-datarequest.onsuccess = (event) => {
+request.onsuccess = (event) => {
   database = event.target.result;
+  loadNotesList();
+};
 
-  const transaction = database.transaction(["notesList"], "readonly");
+request.onerror = (event) => {
+  console.error("IndexedDB Error:", event.target.error);
+};
+
+function loadNotesList() {
+  noteOptions.innerHTML = "";
+
+  const transaction = database.transaction("notesList", "readonly");
   const store = transaction.objectStore("notesList");
-  const list = store.getAll();
 
-  list.onsuccess = () => {
-    if (list.result.length > 0) {
-      for (let i = 0; i < list.result.length; i++) {
-        let option = new Option(list.result[i].name, list.result[i].name);
-        option.dataset.id = list.result[i].id;
-        noteOptions.appendChild(option);
-      }
-    }
+  const getAllRequest = store.getAll();
+
+  getAllRequest.onsuccess = () => {
+    getAllRequest.result.forEach((note) => {
+      const option = new Option(note.name, note.name);
+      option.dataset.id = note.id;
+      noteOptions.appendChild(option);
+    });
   };
-};
+}
 
-datarequest.onerror = (event) => {
-  console.error(event.target.error);
-};
+function updateOption(id, name) {
+  const option = [...noteOptions.children].find(
+    (child) => Number(child.dataset.id) === Number(id),
+  );
 
-// Saving
+  if (!option) return;
 
-save.addEventListener("click", () => {
-  if (!database) {
-    console.error("Database is Null:", database);
+  option.value = name;
+  option.text = name;
+}
+
+function addOption(id, name) {
+  const option = new Option(name, name);
+  option.dataset.id = id;
+  noteOptions.appendChild(option);
+}
+
+noteNameInput.addEventListener("change", () => {
+  if (!database) return;
+
+  const enteredName = noteNameInput.value.trim();
+
+  const option = [...noteOptions.children].find(
+    (child) => child.value === enteredName,
+  );
+
+  if (!option) {
+    currentItem = null;
     return;
   }
 
-  const transaction = database.transaction(["notesList"], "readwrite");
+  const transaction = database.transaction("notesList", "readonly");
   const store = transaction.objectStore("notesList");
 
-  const getSaved = store.getAll();
+  const getRequest = store.get(Number(option.dataset.id));
 
-  const nameInsert = noteNameInput.value;
-  const noteInsert = keyNote.value;
+  getRequest.onsuccess = () => {
+    const note = getRequest.result;
 
-  getSaved.onsuccess = () => {
-    const previousId = getSaved.result.find(
-      (saved) => saved.id === Number(currentItem),
-    );
+    if (!note) return;
 
-    if (nameInsert.trim() == "") {
-      console.warn("EMPTY");
-      return;
-    }
-
-    if (previousId) {
-      previousId.notes = noteInsert;
-      store.put(previousId);
-    } else {
-      const addRequest = store.add({
-        name: nameInsert,
-        notes: noteInsert,
-      });
-      addRequest.onsuccess = () => {
-        const newOption = new Option(nameInsert, nameInsert);
-        newOption.dataset.id = addRequest.result;
-        noteOptions.appendChild(newOption);
-      };
-    }
+    currentItem = note.id;
+    keyNote.value = note.notes;
   };
 });
 
-noteNameInput.addEventListener("input", () => {
-  const name = noteNameInput.value;
+saveButton.addEventListener("click", () => {
+  if (!database) return;
 
-  const transaction = database.transaction(["notesList"], "readonly");
+  const name = noteNameInput.value.trim();
+  const content = keyNote.value;
+
+  if (!name) {
+    console.warn("Note name is required.");
+    return;
+  }
+
+  const transaction = database.transaction("notesList", "readwrite");
   const store = transaction.objectStore("notesList");
-  const request = store.getAll();
 
-  request.onsuccess = () => {
-    const match = [...noteOptions.children].find(
-      (child) => child.value === noteNameInput.value.trim(),
-    );
-    if (!match) {
-      currentItem = null;
-      return;
-    }
-    const note = request.result.find(
-      (item) => item.id === Number(match.dataset.id),
-    );
+  // UPDATE EXISTING NOTE
+  if (currentItem !== null) {
+    const getRequest = store.get(Number(currentItem));
 
-    if (!note) return;
-    keyNote.value = note.notes;
-    currentItem = match.dataset.id;
+    getRequest.onsuccess = () => {
+      const note = getRequest.result;
+
+      if (!note) {
+        currentItem = null;
+        return;
+      }
+
+      note.name = name;
+      note.notes = content;
+
+      const updateRequest = store.put(note);
+
+      updateRequest.onsuccess = () => {
+        updateOption(note.id, name);
+
+        localStorage.removeItem("lastNote");
+        localStorage.removeItem("lastName");
+      };
+    };
+
+    return;
+  }
+
+  // CREATE NEW NOTE
+  const addRequest = store.add({
+    name,
+    notes: content,
+  });
+
+  addRequest.onsuccess = () => {
+    currentItem = addRequest.result;
+
+    addOption(currentItem, name);
+
+    localStorage.removeItem("lastNote");
+    localStorage.removeItem("lastName");
   };
 });

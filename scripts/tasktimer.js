@@ -8,23 +8,41 @@ let stopButton = document.getElementById("stop");
 let goal = document.getElementById("goal");
 let goalInput = document.getElementById("goalinput");
 
+let pomodoroToggle = false;
+const pomodoroButton = document.getElementById("pomodoroToggle");
+const pomodoroContainer = document.querySelector(".pomodoro");
+
 const buzzerSound = new Audio("../../assets/audio/buzzer.mp3");
 const adjustSound = new Audio("../../assets/audio/adjust.mp3");
 const startSound = new Audio("../../assets/audio/timerstarted.mp3");
 const denySound = new Audio("../../assets/audio/deny.mp3");
 
 let time;
+let pastTime;
 let timerCount;
 let timerOn = false;
+
+// Continue Past Timer
 
 window.addEventListener("load", () => {
   let previousTime = localStorage.getItem("taskTime");
   let previousGoal = localStorage.getItem("goal");
+  let pomodoroMode = localStorage.getItem("pomodoro");
 
   timerInput.value = "00";
   startButton.style.display = "none";
 
+  pomodoroButton.checked = false;
+
   if (previousTime) {
+    if (previousGoal || previousGoal == "") {
+      goalInput.style.display = "block";
+      goal.innerText = "Goal: ";
+    } else if (!previousGoal) {
+      goalInput.style.display = "none";
+      goal.innerText = previousGoal;
+    }
+
     timerOn = true;
     time = previousTime;
 
@@ -46,19 +64,20 @@ window.addEventListener("load", () => {
     startButton.style.display = "inline";
     startButton.innerText = "Pause";
 
+    pastTime = Number(timerInput.value);
     timerInput.style.display = "none";
 
     startTimer();
   }
-
-  if (!previousGoal || previousGoal == "") {
-    goalInput.style.display = "block";
-    goal.innerText = "Goal: ";
-  } else if (previousGoal) {
-    goalInput.style.display = "none";
-    goal.innerText = previousGoal;
-  }
 });
+
+// Pomodoro Button Logic
+
+pomodoroButton.addEventListener("change", (tick) => {
+  pomodoroToggle = tick.target.checked;
+});
+
+// Spinner Logic
 
 spinnerUp.addEventListener("click", () => {
   let currentValue = Number(timerInput.value);
@@ -118,8 +137,11 @@ spinnerDown.addEventListener("click", () => {
   adjustSound.play();
 });
 
+// Timer
+
 function startTimer() {
   clearInterval(timerCount);
+  pomodoroContainer.style.display = "none";
   timerCount = setInterval(() => {
     let minute = Math.floor(time / 60);
     let second = time % 60;
@@ -135,17 +157,30 @@ function startTimer() {
     timer.innerText = String(minute + " : " + second);
 
     if (time - 1 < 0) {
-      startButton.innerText = "Start";
-      startButton.style.display = "none";
-      stopButton.innerText = "Exit";
-      stopButton.style.display = "inline";
-      timer.style.color = "var(--urgent)";
-      timerInput.style.color = "var(--urgent)";
-      goal.style.color = "var(--urgent)";
-      buzzerSound.play();
-      clearInterval(timerCount);
-      localStorage.removeItem("taskTime");
-      localStorage.removeItem("goal");
+      // End
+      if (pomodoroToggle === true) {
+        pomodoroToggle = "break";
+        goal.innerText = "Break!";
+        time = pastTime * 60 * 0.2;
+        startSound.play();
+        startTimer();
+      } else if (pomodoroToggle === "break") {
+        time = pastTime
+        startTimer()
+      } else {
+        startButton.innerText = "Start";
+        startButton.style.display = "none";
+        stopButton.innerText = "Exit";
+        stopButton.style.display = "inline";
+        timer.style.color = "var(--urgent)";
+        timerInput.style.color = "var(--urgent)";
+        goal.style.color = "var(--urgent)";
+        buzzerSound.play();
+        clearInterval(timerCount);
+        localStorage.removeItem("taskTime");
+        localStorage.removeItem("goal");
+        pomodoroToggle = false;
+      }
       return;
     }
 
@@ -166,6 +201,7 @@ startButton.addEventListener("click", () => {
     spinnerContainer.style.display = "none";
     stopButton.style.display = "none";
     startButton.innerText = "Pause";
+    pastTime = Number(timerInput.value);
     timerInput.style.display = "none";
 
     if (!time) {
@@ -215,6 +251,8 @@ stopButton.addEventListener("click", () => {
   goal.style.color = "var(--fontclr)";
 
   goalInput.style.display = "inline";
+
+  pomodoroContainer.style.display = "block";
 
   clearInterval(timerCount);
   localStorage.removeItem("taskTime");

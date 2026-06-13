@@ -11,8 +11,6 @@
   --clr: #EFEFEF;
   --fontclr: #272727;
   --theme: #F09B6D;
-  --studyclr: #272727;
-  --studyfontclr: #efefef;
   --urgent: red;
 
   /* Fonts */
@@ -28,4 +26,7 @@
 
 button:hover {
   cursor: pointer;
+}
+* {
+  transition: var(--trans);
 }
