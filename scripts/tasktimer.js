@@ -8,7 +8,11 @@ let stopButton = document.getElementById("stop");
 let goal = document.getElementById("goal");
 let goalInput = document.getElementById("goalinput");
 
-let pomodoroToggle = false;
+let pomodoroToggle = 2;
+// 1 = True
+// 2 = False
+// 3 = Break
+
 const pomodoroButton = document.getElementById("pomodoroToggle");
 const pomodoroContainer = document.querySelector(".pomodoro");
 
@@ -22,14 +26,12 @@ let pastTime;
 let timerCount;
 let timerOn = false;
 
-let saveGoal = null;  
-
 // Continue Past Timer
 
 window.addEventListener("load", () => {
-  let previousTime = localStorage.getItem("taskTime");
+  let previousTime = Number(localStorage.getItem("taskTime"));
   let previousGoal = localStorage.getItem("goal");
-  let pomodoroMode = localStorage.getItem("pomodoro");
+  let pomodoroMode = Number(localStorage.getItem("pomodoro"));
 
   timerInput.value = "00";
   startButton.style.display = "none";
@@ -37,11 +39,13 @@ window.addEventListener("load", () => {
   pomodoroButton.checked = false;
 
   if (previousTime) {
-    if (previousGoal || previousGoal == "") {
-      goal.innerText = "Goal: ";
-    } else if (!previousGoal) {
-      goal.innerText = null;
-    }
+      if (previousGoal !== "") {
+        goalInput.style.display = "none";
+        goal.innerText = previousGoal;
+      } else {
+        goalInput.style.display = "none";
+        goal.style.display = "none";
+      }
 
     timerOn = true;
     time = previousTime;
@@ -74,7 +78,7 @@ window.addEventListener("load", () => {
 // Pomodoro Button Logic
 
 pomodoroButton.addEventListener("change", (tick) => {
-  pomodoroToggle = tick.target.checked;
+  pomodoroToggle = tick.target.checked ? 1:2;
 });
 
 // Spinner Logic
@@ -158,18 +162,18 @@ function startTimer() {
 
     if (time - 1 < 0) {
       // End
-      if (pomodoroToggle === true) {
-        pomodoroToggle = "break";
+      if (pomodoroToggle === 1) {
+        pomodoroToggle = 3;
         goal.innerText = "Break!";
         time = pastTime * 0.2;
         startSound.play();
         startTimer();
-      } else if (pomodoroToggle === "break") {
+      } else if (pomodoroToggle === 3) {
         goal.innerText = localStorage.getItem("goal");
         time = pastTime;
         startTimer();
         startSound.play()
-        pomodoroToggle = false;
+        pomodoroToggle = 2;
       } else {
         startButton.innerText = "Start";
         startButton.style.display = "none";
@@ -182,13 +186,18 @@ function startTimer() {
         clearInterval(timerCount);
         localStorage.removeItem("taskTime");
         localStorage.removeItem("goal");
-        pomodoroToggle = false;
+        pomodoroToggle = 2;
       }
       return;
     }
 
+      if (pomodoroToggle === 3) {
+        goal.innerText = "Break!"
+      }
+
     time--;
     localStorage.setItem("taskTime", time);
+    localStorage.setItem("pomodoro", pomodoroToggle)
     timerOn = true;
   }, 1000);
 }
@@ -199,6 +208,7 @@ startButton.addEventListener("click", () => {
     stopButton.style.display = "block";
     startButton.innerText = "Resume";
     clearInterval(timerCount);
+    localStorage.setItem("taskTime", time)
   } else {
     timerOn = true;
     spinnerContainer.style.display = "none";
@@ -220,7 +230,6 @@ startButton.addEventListener("click", () => {
       } else {
         goalInput.style.display = "none";
         goal.style.display = "none";
-        startSound.play();
       }
     }
 
@@ -256,6 +265,8 @@ stopButton.addEventListener("click", () => {
   goalInput.style.display = "inline";
 
   pomodoroContainer.style.display = "block";
+  pomodoroButton.checked = false;
+  pomodoroToggle = 2;
 
   clearInterval(timerCount);
   localStorage.removeItem("taskTime");
