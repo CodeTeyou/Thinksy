@@ -15,8 +15,6 @@ window.addEventListener("load", () => {
         flipValue("clr", "#272727")
         flipValue("fontclr", "#EFEFEF")
     }
-
-    console.log(preference);
 })
 
 const toggleButton = document.getElementById("modeToggle")
@@ -39,5 +37,4 @@ toggleButton.addEventListener("click", () => {
         preference = false;
     }
     localStorage.setItem("lightPreference", preference)
-    console.log(preference);
 })
