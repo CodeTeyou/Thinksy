@@ -3,7 +3,7 @@
 :root {
   /* Formatting */
   --spacing: 8px;
-  --trans: all 0.2s ease-in-out;
+  --trans: all 0.1s ease-in-out;
 
   /* Colors */
   --clr: #efefef;
@@ -16,7 +16,7 @@
   --fontlrg: 40px;
   --fontdisplay: 40px;
   --fontsize: 16px;
-  --fontsmall: 8px;
+  --fontsmall: 14px;
 }
 
 *:focus {
@@ -31,7 +31,7 @@ button:hover {
   transition: var(--trans);
 }
 
-body::before {
+body::after {
   background-color: var(--theme);
   position: fixed;
   z-index: -1;
@@ -54,12 +54,14 @@ body::before {
     0 85%,
     8% 50%
   );
+
+  opacity: 0.5;
 }
 
 main {
-  margin-top: 8vh + 1px;
+  margin-top: 1px;
   backdrop-filter: blur(150px);
-  -webkit-backdrop-filter: blur(50px);
+  -webkit-backdrop-filter: blur(150px);
   width: 100vw;
 }
 

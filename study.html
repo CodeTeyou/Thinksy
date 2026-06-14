@@ -50,20 +50,24 @@
         </div>
       </div>
 
+      <!-- Create Open Button Here -->
+      <div id="openToggle"></div>
+
       <div class="notes">
-        <div class="savebox">
           <textarea
             id="keynotes"
             placeholder="Type Key Notes Here..."
           ></textarea>
+        <div class="savebox">
           <!-- Add A "Duplicate Or Overwrite Prompt" -->
-          <h1>Key Notes</h1>
           <div class="savename">
-            <input type="text" id="notename" maxlength="20" list="savednotes" />
+            <label for="nameInput">Name</label>
+            <input type="text" id="notename" name="nameInput" maxlength="20" list="savednotes" />
             <datalist id="savednotes"></datalist>
           </div>
           <button id="save">Save</button>
         </div>
+        
       </div>
     </main>
   </body>

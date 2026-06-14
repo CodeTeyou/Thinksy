@@ -1,6 +1,6 @@
 let preference;
 
-window.addEventListener("load", () => {
+window.onload = () => {
   preference = localStorage.getItem("lightPreference");
   if (preference === null) {
     preference = false;
@@ -8,14 +8,8 @@ window.addEventListener("load", () => {
     preference = JSON.parse(preference);
   }
 
-  if (preference) {
-    flipValue("clr", "#EFEFEF");
-    flipValue("fontclr", "#272727");
-  } else {
-    flipValue("clr", "#272727");
-    flipValue("fontclr", "#EFEFEF");
-  }
-});
+  styleColor();
+};
 
 const toggleButton = document.getElementById("modeToggle");
 const root = document.querySelector(":root");
@@ -26,19 +20,23 @@ function flipValue(object, assignedValue) {
   root.style.setProperty(changeObject, String(assignedValue));
 }
 
-toggleButton.addEventListener("click", () => {
-  if (!preference) {
+function styleColor() {
+    if (!preference) {
     flipValue("clr", "#EFEFEF");
     flipValue("fontclr", "#272727");
     flipSpinners(preference);
-    preference = true;
   } else {
     flipValue("clr", "#272727");
     flipValue("fontclr", "#EFEFEF");
     flipSpinners(preference);
-    preference = false;
   }
-  localStorage.setItem("lightPreference", preference);
+}
+
+
+toggleButton.addEventListener("click", () => {
+  preference = !preference;
+  styleColor()
+  localStorage.setItem("lightPreference", JSON.stringify(preference));
 });
 
 function flipSpinners(pref) {
