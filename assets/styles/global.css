@@ -56,6 +56,8 @@ body::after {
   );
 
   opacity: 0.5;
+
+  filter: drop-shadow(0, 10px, 10px);
 }
 
 main {
