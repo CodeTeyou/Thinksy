@@ -18,7 +18,7 @@ window.addEventListener("load", () => {
   keyNote.value = savedContent;
   noteNameInput.value = savedName;
   if (savedItem) {
-    currentItem = savedItem;
+    currentItem = Number(savedItem);
   }
 });
 
