@@ -19,11 +19,11 @@
   height: 100vh;
 }
 
-h1 {
+.headerRef {
   color: var(--fontclr);
-  font-size: 3vw;
+  font-size: 3rem;
   position: absolute;
-  top: -1rem;
+  top: -2rem;
   left: 1rem;
 }
 
@@ -165,6 +165,12 @@ h1 {
   color: var(--fontclr);
   border: 1px solid var(--fontclr);
   height: 60vh;
+  max-width: 100%;
   aspect-ratio: 216 / 279;
   filter: drop-shadow(0 8px 8px rgba(0, 0, 0, 0.5));
+  padding: 8px;
+
+  display: flex;
+  overflow: hidden;
+  flex-wrap: wrap;
 }

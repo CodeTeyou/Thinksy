@@ -10,7 +10,7 @@ const editorSettings = getElement("editorSettings");
 
 let pageList = [];
 
-class Page  {
+class Page {
   element;
 
   constructor(pageId, parentElement) {
@@ -29,6 +29,28 @@ class Page  {
   }
 }
 
+// Constructor
+function makeElement(elementType, editable, placeHolder) {
+  const newElement = document.createElement(elementType);
+  newElement.contentEditable = editable;
+  try {
+    newElement.innerText = placeHolder;
+  } catch (err) {
+    console.error(err);
+  }
+  return newElement;
+}
+
+// Previous Page Render
+
+// Initial Page
+const firstPage = new Page(
+  `$page-${String(pageList.length + 1)}`,
+  documentWriter,
+);
+
+// !! Make a page sizing system
+
 // Function List
 const editorActions = {
   addSection() {
@@ -36,18 +58,19 @@ const editorActions = {
   },
   addTitle() {
     console.log("Add Title: ");
+
   },
   addHeader() {
-    console.log("Add Header: ");
+    console.log("Add Footer: ");
   },
   boldText() {
-    console.log("Text Bold: ");
+    document.execCommand("bold");
   },
   underlineText() {
-    console.log("Text Underline: ");
+    document.execCommand("underline");
   },
   italicText() {
-    console.log("Italicize Text: ");
+    document.execCommand("italic");
   },
 };
 
