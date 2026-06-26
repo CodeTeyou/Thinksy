@@ -59,7 +59,7 @@ class Page {
 
 // Initial Page
 const firstPage = new Page(
-  `$page-${String(pageList.length + 1)}`,
+  `page-${String(pageList.length + 1)}`,
   documentWriter,
 );
 
@@ -68,7 +68,7 @@ const editorActions = {
   addSection() {},
   addTitle() {},
   addPage() {
-    const newPageMade = new Page(String(pageList.length + 1), documentWriter);
+    const newPageMade = new Page(`page-${String(pageList.length + 1)}`, documentWriter);
   },
   boldText() {
     document.execCommand("bold");
